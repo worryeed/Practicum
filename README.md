@@ -40,6 +40,49 @@ Github поддерживает markdown, поэтому можно красив
 
 Многие команды Git принимают в качестве параметра хеш коммита. Если нужно передать последний коммит, то вместо его хеша можно просто написать слово HEAD — Git поймёт, что вы имели в виду последний коммит.<br>
 
+## Статусы файлов в Git<br>
 
+Статусы untracked/tracked, staged и modified<br>
 
+Типичный жизненный цикл файла в Git<br>
+
+1. Файл только что создали. Git ещё не отслеживает содержимое этого файла. Состояние: `untracked`.
+2. Файл добавили в staging area с помощью `git add`. Состояние: `staged` (+ `tracked`).
+	- Возможно, изменили файл ещё раз. Состояния: `staged`, `modified` (+ `tracked`).<br>Обратите внимание: `staged` и `modified` у одного файла, но у разных его версий.
+	- Ещё раз выполнили `git add`. Состояние: `staged` (+ `tracked`).
+3. Сделали коммит с помощью `git commit`. Состояние: `tracked`.
+4. Изменили файл. Состояние: `modified` (+ `tracked`).
+5. Снова добавили в staging area с помощью `git add`. Состояния: `staged` (+ `tracked`).
+6. Сделали коммит. Состояния: `tracked`.
+7. Повторили пункты 4−7 много-много раз.
+
+```mermaid
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#FFFFFF',
+      'primaryTextColor': '#FFFFFF',
+      'primaryBorderColor': '#7C0000',
+      'lineColor': '#000000',
+      'secondaryColor': '#F8B229',
+      'tertiaryColor': '#000000',
+      'nodeBorder' : '#000000',
+      'fill' : 'fa7555'
+    }
+  }
+}%%
+
+graph TB;
+  untracked -- "git add"     --> staged;
+  staged    -- "git commit"  --> tracked;
+  tracked   -- "some change" --> modified
+  modified  -- "git add"     --> staged;
+  staged    -- "some change" --> modified;
+
+  style untracked fill:#fa7555,stroke-width:1px
+  style staged fill:#fa7555,stroke-width:1px
+  style tracked fill:#fa7555,stroke-width:1px
+  style modified fill:#fa7555,stroke-width:1px
+```
 
